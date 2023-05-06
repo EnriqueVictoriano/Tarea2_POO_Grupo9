@@ -35,7 +35,7 @@ public class WindowView extends Group {
         getChildren().addAll(origenPillar, switchPillar, fixedGlas,slidingGlas);
     }
     public void setWindowModel(Window model) {
-        ....
+        winModel = model;
     }
     public void addMagneticSensorView(MagneticSensorView msView){
         placeMagneticSensor(msView);
@@ -50,9 +50,8 @@ public class WindowView extends Group {
     private void prepareOpen_CloseTransition(){
         transition = new TranslateTransition(Duration.millis(2000), slidingGlas);
         transition.setCycleCount(1);
-        transition.setOnFinished(actionEvent -> transition.stop());
+        transition.setOnFinished(actionEvent -> {winModel.finishMovement(); transition.getOnFinished();});
     }
-
     public void startOpening(){
         transition.stop();
         transition.setFromX(slidingGlas.getTranslateX());// in case the user decides to close before it opens.
@@ -65,19 +64,13 @@ public class WindowView extends Group {
         transition.stop();
         transition.setFromX(slidingGlas.getTranslateX());  // in case the user decides to open before it closes.
         transition.setFromY(slidingGlas.getTranslateY());
-        transition.setToX(TmpX); // original position
-        transition.setToY(TmpY);
+        transition.setToX(PosX); // original position
+        transition.setToY(PosY);
         transition.play();
-    }
-    public void translateAxis(int wAngle){
-        if (wAngle == 0) TmpX = PosX+20;
-        else if (wAngle == 90) TmpY = PosY + 20;
-        else if (wAngle == 180) TmpX = PosX - 20;
-        else if (wAngle == 270) TmpY =  PosY - 20;
     }
     private TranslateTransition transition;
     private Window winModel;
     private Rectangle switchPillar;
     private Rectangle slidingGlas;
-    public int PosX, TmpX, PosY, TmpY, WindowAngle;
+    public int PosX, PosY, WindowAngle;
 }
