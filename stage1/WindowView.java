@@ -14,6 +14,7 @@ public class WindowView extends Group {
        // getTransforms().add(new Rotate(angle,40,50));  // to rotate at anchor pivot (40,50)
         relocate(x, y);
         prepareOpen_CloseTransition();
+
     }
     private void makeWindowViewWithoutSensor(){
         Rectangle origenPillar = new Rectangle(0, 0, 20, 20);
@@ -52,14 +53,14 @@ public class WindowView extends Group {
     }
     public void startOpening(){
         transition.stop();
-        transition.setFromX();// in case the user decides to close before it opens.
-        transition.setToX();
+        transition.setFromX(0);// in case the user decides to close before it opens.
+        transition.setToX(-slidingGlas.getWidth()+6);
         transition.play();
     }
     public void startClosing(){
         transition.stop();
-        transition.setFromX();  // in case the user decides to open before it closes.
-        transition.setToX(); // original position
+        transition.setFromX(-slidingGlas.getWidth()+6);  // in case the user decides to open before it closes.
+        transition.setToX(0); // original position
         transition.play();
     }
     private TranslateTransition transition;
