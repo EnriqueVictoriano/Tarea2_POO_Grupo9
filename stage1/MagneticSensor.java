@@ -5,9 +5,11 @@ public class MagneticSensor extends Sensor {
     }
     public void setSensorOpen() {
         setState(SwitchState.OPEN);
+        view.setOpenView();
     }
     public void setSensorClose() {
-        setState(SwitchState.OPEN);
+        setState(SwitchState.CLOSE);
+        view.setCloseView();
     }
     public MagneticSensorView getView(){ return view;}
     private final MagneticSensorView view;

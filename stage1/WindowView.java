@@ -1,4 +1,5 @@
 import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
@@ -8,11 +9,10 @@ import javafx.util.Duration;
 
 public class WindowView extends Group {
     public WindowView(int x, int y, int angle){
-        PosX = x; PosY = y; WindowAngle = angle;
         makeWindowViewWithoutSensor();
         setRotate(angle);  // to rotate at the geometric center.
        // getTransforms().add(new Rotate(angle,40,50));  // to rotate at anchor pivot (40,50)
-        relocate(x,y);
+        relocate(x, y);
         prepareOpen_CloseTransition();
     }
     private void makeWindowViewWithoutSensor(){
@@ -32,7 +32,7 @@ public class WindowView extends Group {
         border.setStrokeWidth(1);
         border.getStrokeDashArray().addAll(4d,4d );
         getChildren().add(border);
-        getChildren().addAll(origenPillar, switchPillar, fixedGlas,slidingGlas);
+        getChildren().addAll(origenPillar, switchPillar, fixedGlas, slidingGlas);
     }
     public void setWindowModel(Window model) {
         winModel = model;
@@ -43,34 +43,27 @@ public class WindowView extends Group {
     }
     private void placeMagneticSensor(MagneticSensorView mv){
         mv.getMagnetView().setX(slidingGlas.getX()+slidingGlas.getWidth()-mv.getMagnetView().getWidth());
-        mv.getMagnetView().setY(slidingGlas.getY()+slidingGlas.getHeight()-mv.getMagnetView().getHeight());
         mv.getMagnetView().translateXProperty().bind(slidingGlas.translateXProperty()); // so it moves along with window
-        mv.getMagnetView().translateYProperty().bind((slidingGlas.translateXProperty()));
     }
     private void prepareOpen_CloseTransition(){
         transition = new TranslateTransition(Duration.millis(2000), slidingGlas);
         transition.setCycleCount(1);
-        transition.setOnFinished(actionEvent -> {winModel.finishMovement(); transition.getOnFinished();});
+        transition.setOnFinished(e -> winModel.finishMovement());
     }
     public void startOpening(){
         transition.stop();
-        transition.setFromX(slidingGlas.getTranslateX());// in case the user decides to close before it opens.
-        transition.setFromY(slidingGlas.getTranslateY());
-        transition.setToX(PosX);
-        transition.setToY(PosY);
+        transition.setFromX();// in case the user decides to close before it opens.
+        transition.setToX();
         transition.play();
     }
     public void startClosing(){
         transition.stop();
-        transition.setFromX(slidingGlas.getTranslateX());  // in case the user decides to open before it closes.
-        transition.setFromY(slidingGlas.getTranslateY());
-        transition.setToX(PosX); // original position
-        transition.setToY(PosY);
+        transition.setFromX();  // in case the user decides to open before it closes.
+        transition.setToX(); // original position
         transition.play();
     }
     private TranslateTransition transition;
     private Window winModel;
     private Rectangle switchPillar;
     private Rectangle slidingGlas;
-    public int PosX, PosY, WindowAngle;
 }

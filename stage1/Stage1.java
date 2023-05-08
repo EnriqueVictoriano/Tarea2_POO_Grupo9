@@ -1,5 +1,9 @@
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileNotFoundException;

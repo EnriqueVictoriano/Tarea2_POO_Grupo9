@@ -1,5 +1,6 @@
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.input.MouseButton;
 
 /**
  * A window with its magnetic sensor.
@@ -11,18 +12,28 @@ public class Window {
         wView = view;
         wView.addMagneticSensorView(magneticSensor.getView());
         wView.setWindowModel(this);
+        wView.setOnMouseClicked(e -> changeState());
     }
     public void changeState() {  // is called when this window's view is clicked
-        if (magneticSensor.getState() == SwitchState.CLOSE)
-            state = State.CLOSING;
-        else if (magneticSensor.getState() == SwitchState.OPEN)
+        if (state == State.CLOSE) {
             state = State.OPENING;
+            wView.startOpening();
+            magneticSensor.setSensorOpen();
+        }
+        else if (state == State.OPEN){
+            state = State.CLOSING;
+            wView.startClosing();
+        }
     }
     public void finishMovement() { // is called when this window ends closing or opening
-        if(state == State.CLOSING)
+        if (state == State.CLOSING) {
             state = State.CLOSE;
-        else if(state == State.OPENING)
+            magneticSensor.setSensorClose();
+            magneticSensor.setSensorClose();
+        }
+        else if (state == State.OPENING) {
             state = State.OPEN;
+        }
     }
     public WindowView getView(){
         return wView;

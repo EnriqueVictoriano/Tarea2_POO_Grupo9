@@ -8,13 +8,13 @@ public class House extends Pane {
         in.nextInt();
         int numWindows = in.nextInt();
         in.nextInt();
-        for (int i = 0; i < numWindows; i++){
+        for (int i = 0; i < numWindows; i++) {
             int x = in.nextInt();
             int y = in.nextInt();
             int angle = in.nextInt();
             int zone = in.nextInt();
-            WindowView windowView= new WindowView(x, y, angle);
-            Window window = new Window(zone , windowView);
+            WindowView windowView = new WindowView(x, y, angle);
+            Window window = new Window(zone, windowView);
             getChildren().add(window.getView());
         }
     }
