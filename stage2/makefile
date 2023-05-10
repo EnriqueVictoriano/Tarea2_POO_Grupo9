@@ -66,13 +66,13 @@ CLASSES = \
 	Door.java \
 	DoorView.java \
 	Siren.java \
-	Siren.View.java
+	SirenView.java
 
 #
 # MAIN is a variable with the name of the file containing the main method
 #
 
-MAIN = Stage1
+MAIN = Stage2
 
 #
 # the default make target entry

@@ -36,13 +36,16 @@ public class WindowView extends Group {
     }
     public void setWindowModel(Window model) {
         winModel = model;
+        setOnMouseClicked(e -> model.changeState());
     }
     public void addMagneticSensorView(MagneticSensorView msView){
         placeMagneticSensor(msView);
+        //...
         getChildren().add(msView);
     }
     private void placeMagneticSensor(MagneticSensorView mv){
         mv.getMagnetView().setX(slidingGlas.getX()+slidingGlas.getWidth()-mv.getMagnetView().getWidth());
+        //...
         mv.getMagnetView().translateXProperty().bind(slidingGlas.translateXProperty()); // so it moves along with window
     }
     private void prepareOpen_CloseTransition(){

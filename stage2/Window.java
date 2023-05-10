@@ -12,7 +12,6 @@ public class Window {
         wView = view;
         wView.addMagneticSensorView(magneticSensor.getView());
         wView.setWindowModel(this);
-        wView.setOnMouseClicked(e -> changeState());
     }
     public void changeState() {  // is called when this window's view is clicked
         if (state == State.CLOSE) {

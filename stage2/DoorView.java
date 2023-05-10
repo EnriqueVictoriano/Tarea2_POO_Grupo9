@@ -1,4 +1,5 @@
 import javafx.animation.*;
+import javafx.geometry.Point3D;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
@@ -45,13 +46,16 @@ public class DoorView extends Group {
     }
     public void setDoorModel(Door model) {
         doorModel = model;
+        setOnMouseClicked(e -> model.changeState());
     }
     public void addMagneticSensorView(MagneticSensorView msView){
         placeMagneticSensor(msView);
+        //...
         getChildren().add(msView);
     }
     private void placeMagneticSensor( MagneticSensorView mv){
         mv.getMagnetView().setX(slidingSheet.getX()+slidingSheet.getWidth()-mv.getMagnetView().getWidth());
+        //...
         mv.getSwitchView().setY(switchPillar.getBoundsInLocal().getHeight());
     }
     private void prepareOpen_CloseRotation() {
@@ -61,14 +65,15 @@ public class DoorView extends Group {
     }
     public void startOpening() {
         rotation.stop();
-        rotation.setAxis(slidingSheet.getRotationAxis());
-        rotation.setByAngle(90);
+        slidingSheet.getTransforms().add(new Rotate(90, slidingSheet.getX(), slidingSheet.getY()));
+        //rotation.setAxis(slidingSheet.getRotationAxis());
+        //rotation.setByAngle(90);
         rotation.play();
     }
     public void startClosing() {
         rotation.stop();
-        rotation.setAxis(slidingSheet.getRotationAxis());
-        rotation.setByAngle(-90);
+
+        slidingSheet.getTransforms().add(new Rotate(-90, slidingSheet.getX(), slidingSheet.getY()));
         rotation.play();
     }
     private RotateTransition rotation;

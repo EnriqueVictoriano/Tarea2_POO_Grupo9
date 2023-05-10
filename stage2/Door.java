@@ -5,15 +5,16 @@ public class Door {
         dView = view;
         dView.addMagneticSensorView(magneticSensor.getView());
         dView.setDoorModel(this);
-        dView.setOnMouseClicked((e -> changeState()));
     }
     public void changeState() {
         if (state == State.CLOSE){
             state = State.OPENING;
+            dView.startOpening();
             magneticSensor.setSensorOpen();
         }
         else if (state == State.OPEN){
             state = State.CLOSING;
+            dView.startClosing();
         }
     }
     public void finishMovement() {

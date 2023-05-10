@@ -21,23 +21,36 @@ public class Central {
         boolean[] close = checkCloseZones();
         String msg="Open zone(s): ";
         msg+=(!close[0]?"0":"-") + (!close[1]?",1":"-") + (!close[2]?",2":"");
-        if(close[0] && close[1] && close[2] ) msg = "Unable to arm all.";
-        else state = CentralState.ALL_ARMED;
+        if(close[0] && close[1] && close[2] ) state = CentralState.ALL_ARMED;
+        else {
+            System.out.println(msg);
+            state = CentralState.DISARMED;
+        }
     }
     public void armPerimeter() {
         boolean[] close = checkCloseZones();
         String msg="Open zone(s): ";
         msg+=(!close[0]?"0":"-") + (!close[1]?",1":"");
-        if(close[0] && close[1] ) msg = "Unable to arm perimeter";
-        else state = CentralState.PERIMETER_ARMED;
+        if(close[0] && close[1] ) state = CentralState.PERIMETER_ARMED;
+        else {
+            System.out.println(msg);
+            state = CentralState.DISARMED;
+        }
     }
     public void disarm() {
         state = CentralState.DISARMED;
+        siren.stop();
     }
     private boolean[] checkCloseZones() {
         boolean[] close = {true, true, true};
-        for (Sensor sensor : zones)
-            close[sensor.getZone()] &=sensor.isClose();
+        boolean flag0 = true, flag1 = true, flag2 = true;
+        for (Sensor sensor : zones) {
+            int i = sensor.getZone();
+            if (sensor.isClose() && i == 0) flag0 = false;
+            else if (sensor.isClose() && i == 1) flag1 = false;
+            else if (sensor.isClose() && i == 2) flag2 = false;
+        }
+        close[0] = flag0; close[1] = flag1; close[2] = flag2;
         return close;
     }
     public void addNewSensor(Sensor s){
@@ -45,12 +58,19 @@ public class Central {
     }
     private void checkZones(){
         boolean[] close = checkCloseZones();
-        if (state == CentralState.ALL_ARMED){
-
+        if (state == CentralState.ALL_ARMED) {
+            for (boolean all : close)
+                if (!all)
+                    siren.play();
         }
-        else if (state == CentralState.PERIMETER_ARMED){
-
+        else if (state == CentralState.PERIMETER_ARMED) {
+            for (boolean perimeter : close)
+                if (!perimeter)
+                    siren.play();
         }
+    }
+    public CentralState getState(){
+        return state;
     }
     enum CentralState {
         ALL_ARMED, PERIMETER_ARMED, DISARMED

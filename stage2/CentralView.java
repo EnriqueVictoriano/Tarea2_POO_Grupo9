@@ -9,7 +9,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 
 public class CentralView extends VBox {
-    private final Label display;
     public CentralView (Central central) {
         super(20);
         display = new Label("Disarmed");
@@ -24,7 +23,20 @@ public class CentralView extends VBox {
         pBtn = new Button("P");
         dBtn = new Button("D");
         aBtn.setFont(controlFont);
-        ...
+        aBtn.setOnMouseClicked(e -> {
+            central.armAll();
+            if (central.getState() == Central.CentralState.ALL_ARMED)
+                setDisplay("All armed");
+        });
+        pBtn.setOnMouseClicked(e -> {
+            central.armPerimeter();
+            if (central.getState() == Central.CentralState.PERIMETER_ARMED)
+                setDisplay("Perimeter armed");
+        });
+        dBtn.setOnMouseClicked(e -> {
+            central.disarm();
+            setDisplay("Disarmed");
+        });
         HBox hBox = new HBox();
         hBox.getChildren().addAll(aBtn,pBtn,dBtn);
         hBox.setAlignment(Pos.CENTER);
@@ -33,4 +45,5 @@ public class CentralView extends VBox {
     public void setDisplay (String msg) {
         display.setText(msg);
     }
+    private Label display;
 }
