@@ -19,7 +19,7 @@ public class Stage2 extends Application {
     public void start(Stage primaryStage) {
         List<String> args = getParameters().getRaw();
         if (args.size() != 1) {
-            System.out.println("Usage: java Stage1 <configurationFile.txt>");
+            System.out.println("Usage: java Stage2 <configurationFile.txt>");
             System.exit(-1);
         }
         Scanner in = null;
