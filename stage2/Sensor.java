@@ -12,10 +12,10 @@ public class Sensor {
     public int getZone() {
         return zone;
     }
-    protected void setClose(boolean close) {
+    protected void setState(boolean close) {
         isClose = close;
     }
 
     private boolean isClose;
-    private int zone;
+    private final int zone;
 }

@@ -2,12 +2,9 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseButton;
 
-/**
- * A window with its magnetic sensor.
- */
 public class Window {
-    public Window(MagneticSensor zone, WindowView view) {
-        magneticSensor = zone;
+    public Window(MagneticSensor sensor, WindowView view) {
+        magneticSensor = sensor;
         state = State.CLOSE;
         wView = view;
         wView.addMagneticSensorView(magneticSensor.getView());
@@ -27,6 +24,7 @@ public class Window {
     public void finishMovement() { // is called when this window ends closing or opening
         if (state == State.CLOSING) {
             state = State.CLOSE;
+            magneticSensor.setSensorClose();
             magneticSensor.setSensorClose();
         }
         else if (state == State.OPENING) {

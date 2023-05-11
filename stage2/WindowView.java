@@ -40,13 +40,16 @@ public class WindowView extends Group {
     }
     public void addMagneticSensorView(MagneticSensorView msView){
         placeMagneticSensor(msView);
-        //...
+        placeSwitchView(msView);
         getChildren().add(msView);
     }
     private void placeMagneticSensor(MagneticSensorView mv){
         mv.getMagnetView().setX(slidingGlas.getX()+slidingGlas.getWidth()-mv.getMagnetView().getWidth());
-        //...
         mv.getMagnetView().translateXProperty().bind(slidingGlas.translateXProperty()); // so it moves along with window
+    }
+    private void placeSwitchView(MagneticSensorView sv){
+        sv.getSwitchView().setX(switchPillar.getX()+switchPillar.getWidth()-(3.4)*sv.getSwitchView().getWidth());
+        sv.getSwitchView().translateXProperty().bind(switchPillar.translateXProperty());
     }
     private void prepareOpen_CloseTransition(){
         transition = new TranslateTransition(Duration.millis(2000), slidingGlas);

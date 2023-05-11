@@ -50,16 +50,21 @@ public class DoorView extends Group {
     }
     public void addMagneticSensorView(MagneticSensorView msView){
         placeMagneticSensor(msView);
+        placeSwitchSensor(msView);
         //...
         getChildren().add(msView);
     }
     private void placeMagneticSensor( MagneticSensorView mv){
         mv.getMagnetView().setX(slidingSheet.getX()+slidingSheet.getWidth()-mv.getMagnetView().getWidth());
         //...
-        mv.getSwitchView().setY(switchPillar.getBoundsInLocal().getHeight());
+        mv.getMagnetView().translateXProperty().bind(slidingSheet.translateXProperty());
+    }
+    private void placeSwitchSensor(MagneticSensorView sv){
+        sv.getSwitchView().setY(switchPillar.getBoundsInLocal().getHeight()-(1.3)*sv.getSwitchView().getHeight());
+        sv.getSwitchView().translateYProperty().bind(switchPillar.translateYProperty());
     }
     private void prepareOpen_CloseRotation() {
-        rotation = new RotateTransition(Duration.millis(2000), slidingSheet);
+        rotation = new RotateTransition(Duration.millis(1), slidingSheet);
         rotation.setCycleCount(1);
         rotation.setOnFinished(e -> doorModel.finishMovement());
     }

@@ -8,22 +8,29 @@ import java.net.URL;
 
 public class Siren {
     public Siren (String mediaURL){
+        isSounding = false;
         Media media = new Media(mediaURL);
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         sView = new SirenView();
     }
     public void play(){
-        sView.startBlinking();
         mediaPlayer.play();
+        sView.startBlinking();
+        isSounding = true;
     }
     public void stop(){
-        sView.stopBlinking();
         mediaPlayer.stop();
+        sView.stopBlinking();
+        isSounding = false;
     }
     public Polygon getView() {
         return sView;
     }
+    public boolean isSounding() {
+        return isSounding;
+    }
     private SirenView sView;
-    private MediaPlayer mediaPlayer;
+    private final MediaPlayer mediaPlayer;
+    private boolean isSounding;
 }

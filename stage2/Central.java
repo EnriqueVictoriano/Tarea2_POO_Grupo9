@@ -8,7 +8,9 @@ import java.util.ArrayList;
 public class Central {
     public Central(Siren siren){
         cView = new CentralView(this);
-        zones = new ArrayList<Sensor>();
+        zone0 = new ArrayList<Sensor>();
+        zone1 = new ArrayList<Sensor>();
+        zone2 = new ArrayList<Sensor>();
         state = CentralState.DISARMED;
         this.siren = siren;
         periodicCheck = new Timeline(new KeyFrame(Duration.millis(200), e-> checkZones()));
@@ -17,24 +19,30 @@ public class Central {
     public VBox getView (){
         return cView;
     }
-    public void armAll() {
+    public boolean armAll() {
         boolean[] close = checkCloseZones();
         String msg="Open zone(s): ";
         msg+=(!close[0]?"0":"-") + (!close[1]?",1":"-") + (!close[2]?",2":"");
-        if(close[0] && close[1] && close[2] ) state = CentralState.ALL_ARMED;
+        if(close[0] && close[1] && close[2] ){
+            state = CentralState.ALL_ARMED;
+            return true;
+        }
         else {
-            System.out.println(msg);
             state = CentralState.DISARMED;
+            return false;
         }
     }
-    public void armPerimeter() {
+    public boolean armPerimeter() {
         boolean[] close = checkCloseZones();
         String msg="Open zone(s): ";
         msg+=(!close[0]?"0":"-") + (!close[1]?",1":"");
-        if(close[0] && close[1] ) state = CentralState.PERIMETER_ARMED;
+        if(close[0] && close[1] ){
+            state = CentralState.PERIMETER_ARMED;
+            return true;
+        }
         else {
-            System.out.println(msg);
             state = CentralState.DISARMED;
+            return false;
         }
     }
     public void disarm() {
@@ -43,39 +51,33 @@ public class Central {
     }
     private boolean[] checkCloseZones() {
         boolean[] close = {true, true, true};
-        boolean flag0 = true, flag1 = true, flag2 = true;
-        for (Sensor sensor : zones) {
-            int i = sensor.getZone();
-            if (sensor.isClose() && i == 0) flag0 = false;
-            else if (sensor.isClose() && i == 1) flag1 = false;
-            else if (sensor.isClose() && i == 2) flag2 = false;
-        }
-        close[0] = flag0; close[1] = flag1; close[2] = flag2;
+        for (Sensor sensor0 : zone0)
+            if (!sensor0.isClose()) { close[0] = false; break; }
+        for (Sensor sensor1 : zone1)
+            if (!sensor1.isClose()) { close[1] = false; break; }
+        for (Sensor sensor2 : zone2)
+            if (!sensor2.isClose()) { close[2] = false; break; }
         return close;
     }
     public void addNewSensor(Sensor s){
-        zones.add(s);
+        if (s.getZone() == 0) zone0.add(s);
+        else if (s.getZone() == 1) zone1.add(s);
+        else if (s.getZone() == 2) zone2.add(s);
     }
     private void checkZones(){
         boolean[] close = checkCloseZones();
-        if (state == CentralState.ALL_ARMED) {
-            for (boolean all : close)
-                if (!all)
-                    siren.play();
-        }
-        else if (state == CentralState.PERIMETER_ARMED) {
-            for (boolean perimeter : close)
-                if (!perimeter)
-                    siren.play();
+        if (!siren.isSounding()){
+            if (state == CentralState.ALL_ARMED)
+                for (boolean check0 : close)
+                    if (!check0) { siren.play(); break; }
+            else if (state == CentralState.PERIMETER_ARMED)
+                        if (!close[0] || !close[1]) { siren.play(); break;}
         }
     }
     public CentralState getState(){
         return state;
     }
-    enum CentralState {
-        ALL_ARMED, PERIMETER_ARMED, DISARMED
-    }
-    private final ArrayList<Sensor> zones;
+    private final ArrayList<Sensor> zone0, zone1, zone2;
     private CentralState state;
     private final Siren siren;
     private final Timeline periodicCheck;

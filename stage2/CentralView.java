@@ -24,14 +24,12 @@ public class CentralView extends VBox {
         dBtn = new Button("D");
         aBtn.setFont(controlFont);
         aBtn.setOnMouseClicked(e -> {
-            central.armAll();
-            if (central.getState() == Central.CentralState.ALL_ARMED)
-                setDisplay("All armed");
+            isArmed = central.armAll();
+            if (isArmed) setDisplay("A Armed");
         });
         pBtn.setOnMouseClicked(e -> {
-            central.armPerimeter();
-            if (central.getState() == Central.CentralState.PERIMETER_ARMED)
-                setDisplay("Perimeter armed");
+            isArmed = central.armPerimeter();
+            if (isArmed) setDisplay("P Armed");
         });
         dBtn.setOnMouseClicked(e -> {
             central.disarm();
@@ -46,4 +44,5 @@ public class CentralView extends VBox {
         display.setText(msg);
     }
     private Label display;
+    private boolean isArmed;
 }

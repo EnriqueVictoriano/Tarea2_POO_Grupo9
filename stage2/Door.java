@@ -18,11 +18,17 @@ public class Door {
         }
     }
     public void finishMovement() {
-        if (state == State.OPENING) state = State.OPEN;
-        else if (state == State.CLOSING){
+        if (state == State.CLOSING){
             state = State.CLOSE;
             magneticSensor.setSensorClose();
         }
+        else if (state == State.OPENING) {
+            state = State.OPEN;
+        }
+
+    }
+    public DoorView getView() {
+        return dView;
     }
     private final DoorView dView;
     private final MagneticSensor magneticSensor;
