@@ -8,15 +8,15 @@ import javafx.scene.input.MouseEvent;
 public class PersonView extends Pane {
 
     public PersonView(Person persona, Color color, double radius) {
-        super(persona.getX(), persona.getY(), radius, color);
+        //super(persona.getX(), persona.getY(), radius, color);
         this.persona = persona;
         this.color = color;
         this.radius = radius;
 
-        cabeza = new Circle(10, java.awt.Color.BLACK);
-        bra_der = new Circle(5, java.awt.Color.BLUE);
-        bra_izq = new Circle(5, java.awt.Color.BLUE);
-        cuerpo = new Rectangle(20, 40, java.awt.Color.GREEN);
+        cabeza = new Circle(10, Color.BLACK);
+        bra_der = new Circle(5, Color.BLUE);
+        bra_izq = new Circle(5, Color.BLUE);
+        cuerpo = new Rectangle(20, 40, Color.GREEN);
 
         cabeza.setCenterX(cuerpo.getWidth() / 2);
         cabeza.setCenterY(cuerpo.getHeight() / 2);
@@ -25,7 +25,7 @@ public class PersonView extends Pane {
         bra_izq.setCenterX(cuerpo.getWidth() / 2);
         bra_izq.setCenterY(-cuerpo.getHeight() + 35);
 
-        root.getChildren().addAll(cuerpo, bra_der, bra_izq, cabeza);
+        getChildren().addAll(cuerpo, bra_der, bra_izq, cabeza);
 
         setOnMouseDragged(event -> {
             cuerpo.setTranslateX(event.getX());
@@ -37,8 +37,8 @@ public class PersonView extends Pane {
             cabeza.setTranslateX(event.getX());
             cabeza.setTranslateY(event.getY());
 
-            persona.setX(event.getX());
-            persona.setY(event.getY());
+            persona.setX((int) event.getX());
+            persona.setY((int) event.getY());
 
         });
 
