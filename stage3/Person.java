@@ -22,3 +22,5 @@ public class Person {
     private int x;
     private int y;
     private boolean isDetected;
+    .
+        <.
