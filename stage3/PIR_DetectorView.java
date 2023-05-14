@@ -15,6 +15,22 @@ public class PIR_DetectorView extends Group{
         prepareArmed_DisarmedTransition();
     }
     private void makePirViewWithoutSensor(int senAngle, int range) {
+        Box = new Rectangle(10,10,10,10);
+        DetectionArea = new Polygon();
+        DetectionArea.getPoints().addAll(
+                0d, 0d,
+                0d, 100d,
+                50d, 75d,
+                100d, 100d,
+                100d, 0d);
+        double x1 = Math.cos(Math.toRadians(senAngle/ 2)) * range;
+        double y1 = Math.sin(Math.toRadians(senAngle / 2)) * range;
+        double x2 = Math.cos(Math.toRadians(-senAngle / 2)) * range;
+        double y2 = Math.sin(Math.toRadians(-senAngle / 2)) * range;
+        DetectionArea.getPoints().addAll(x1, y1, x2, y2);
+        DetectionArea.setFill(Color.TRANSPARENT);
+        DetectionArea.setStroke(Color.RED);
+        getChildren().addAll(Box,DetectionArea);
 
     }
     public void setPirModel(PIR_Detector model) {
@@ -41,8 +57,10 @@ public class PIR_DetectorView extends Group{
     }
     public void startDisarming() {
         transition.stop();
-        transition.setFromX(-1); transition.setToX(0);
-        transition.setFromY(-1); transition.setToY(0);
+        transition.setFromX(-1);
+        transition.setToX(0);
+        transition.setFromY(-1);
+        transition.setToY(0);
         Box.setFill(Color.GREY);
         transition.play();
     }
