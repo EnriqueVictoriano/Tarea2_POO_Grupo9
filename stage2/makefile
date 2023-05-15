@@ -12,7 +12,7 @@
 JFLAGS = -g
 JC = javac
 JVM= java
-JFX_OPTIONS = --module-path /home/pacha/Escritorio/JavaFX/javafx-sdk-17.0.7/lib --add-modules javafx.controls,javafx.media
+JFX_OPTIONS = --module-path "/path/to/javafx/lib" --add-modules javafx.controls,javafx.media
 FILE="config.txt"
 
 #
