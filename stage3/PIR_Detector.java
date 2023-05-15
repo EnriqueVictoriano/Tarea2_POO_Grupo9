@@ -1,4 +1,12 @@
+/**
+*Esta clase representa un detector pir
+*/
 public class PIR_Detector {
+    /**
+    *Constructor para crear el obejto PIR_Detector
+    *@Param pirSensor El sensor asociado al PIR_Detector
+    *@Param state Inicializa el estado del sensor en cerrado
+    */
     public PIR_Detector(PIR_Sensor sensor, PIR_DetectorView view){
         pirSensor = sensor;
         state = State.CLOSE;
